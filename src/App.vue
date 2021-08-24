@@ -159,10 +159,7 @@ export default defineComponent({
       const a = b.key.charCodeAt(0);
 
       // a === 66 back
-      if (a === 66) {
-        if (comp.value.length <= 0) {
-          return false;
-        }
+      if (a === 66 && comp.value.length >= 1) {
         const s = comp.value.slice(0, -1);
         comp.value = s;
         cand.value = '';
@@ -170,7 +167,7 @@ export default defineComponent({
         return true;
       }
       // 1 === 32 space
-      if (a === 32) {
+      if (a === 32 && comp.value.length >= 1) {
         comp.value = '';
         cand.value = '';
         SendStr(CandChinesePart[0]);
