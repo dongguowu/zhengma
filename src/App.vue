@@ -44,14 +44,12 @@ import CodeList from './CodeList';
 export default defineComponent({
   name: 'App',
   setup() {
-    const MAX = CodeList.length;
-
     const input = ref(null);
     const inputContent = ref('');
     const comp = ref('');
     const cand = ref('');
+    let isEnglish = false;
 
-    let LastNo = 0;
     const SPACECHAR = ' ';
     const CandChinesePart: string[] = [];
     const CandCompPart: string[] = [];
@@ -120,7 +118,6 @@ export default defineComponent({
       if (b === 10 && a <= CodeList.length - 11 && CodeList[a + b].indexOf(c) === 0) {
         cand.value += '+.\u2192';
       }
-      LastNo = a;
     };
 
     function SendStr(c: string) {
@@ -158,6 +155,20 @@ export default defineComponent({
       console.log('keypress', b.key.charCodeAt(0));
       const a = b.key.charCodeAt(0);
 
+      if (isEnglish) {
+        if (a === 69) {
+          console.log(inputContent.value.slice(-3));
+          if (inputContent.value.slice(-3) === ':zm') {
+            isEnglish = false;
+            inputContent.value = inputContent.value.slice(0, -3);
+            comp.value = '';
+            return false;
+          }
+        }
+
+        return true; // starting input english words
+      }
+
       // a === 66 back
       if (a === 66 && comp.value.length >= 1) {
         const s = comp.value.slice(0, -1);
@@ -176,9 +187,19 @@ export default defineComponent({
 
       if (a >= 97 && a <= 122) {
         const s = comp.value;
-        if (s.length <= 3) {
+        if (s.length <= 4) {
           comp.value += b.key;
           cand.value = '';
+
+          // change to english editing status
+          console.log(s.indexOf('engl'));
+          if (s.indexOf('engl') === 0) {
+            isEnglish = true;
+            // comp.value = 'english input';
+            comp.value = ':zm to return chinese';
+            return true;
+          }
+
           Grep(comp.value);
         } else {
           comp.value = '';
