@@ -1,14 +1,14 @@
-import { onMounted, ref } from "vue"
-import CodeList from "./CodeList"
+import { onMounted, ref } from 'vue'
+import CodeList from './CodeList'
 
 export default function(): Record<string, unknown> {
   const input = ref(null)
-  const inputContent = ref("")
-  const comp = ref("")
-  const cand = ref("")
+  const inputContent = ref('')
+  const comp = ref('')
+  const cand = ref('')
 
   let isEnglish = false
-  const SPACECHAR = " "
+  const SPACECHAR = ' '
   const CandChinesePart: string[] = []
   const CandCompPart: string[] = []
 
@@ -17,7 +17,7 @@ export default function(): Record<string, unknown> {
     let a = 0
     let c = 0
     let e = CodeList.length
-    let b = ""
+    let b = ''
     while (a < e) {
       c = (a + e) / 2
       c = Math.floor(c)
@@ -49,8 +49,8 @@ export default function(): Record<string, unknown> {
   }
 
   const GetStr = (a: number, c: string): void => {
-    let e = ""
-    let d = ""
+    let e = ''
+    let d = ''
     let b
     for (b = 0; b <= 9; b += 1) {
       if (a + b > CodeList.length - 1) {
@@ -71,14 +71,14 @@ export default function(): Record<string, unknown> {
       }
     }
     if (a > 10 && CodeList[a - 10].indexOf(c) === 0) {
-      cand.value += "-.\u2190\n"
+      cand.value += '-.\u2190\n'
     }
     if (
       b === 10 &&
       a <= CodeList.length - 11 &&
       CodeList[a + b].indexOf(c) === 0
     ) {
-      cand.value += "+.\u2192"
+      cand.value += '+.\u2192'
     }
   }
 
@@ -92,42 +92,42 @@ export default function(): Record<string, unknown> {
   function SendCand(a: number) {
     if (a >= 0 && a <= 9) {
       SendStr(CandChinesePart[a])
-      comp.value = ""
-      cand.value = ""
+      comp.value = ''
+      cand.value = ''
     }
   }
 
   function Grep(targetStr: string): void {
     let index = -1
     for (let i = 0; i <= 9; i += 1) {
-      CandChinesePart[i] = ""
+      CandChinesePart[i] = ''
     }
-    if (targetStr !== "") {
+    if (targetStr !== '') {
       index = FindIn(targetStr)
       if (index >= 0) {
         GetStr(index, targetStr)
       }
     }
     if (
-      CandChinesePart[0] !== "" &&
-      CandChinesePart[1] === "" &&
-      CandCompPart[0] === ""
+      CandChinesePart[0] !== '' &&
+      CandChinesePart[1] === '' &&
+      CandCompPart[0] === ''
     ) {
       SendCand(0)
     }
   }
 
   const zhengmaKeydown = (e: KeyboardEvent): boolean => {
-    console.log("keydown: ", e.key, e.key.charCodeAt(0))
+    console.log('keydown: ', e.key, e.key.charCodeAt(0))
     const keyCode = e.key.charCodeAt(0)
 
     if (isEnglish) {
       if (keyCode === 69) {
         console.log(inputContent.value.slice(-3))
-        if (inputContent.value.slice(-3) === ":zm") {
+        if (inputContent.value.slice(-3) === ':zm') {
           isEnglish = false
           inputContent.value = inputContent.value.slice(0, -3)
-          comp.value = ""
+          comp.value = ''
           return false
         }
       }
@@ -139,14 +139,14 @@ export default function(): Record<string, unknown> {
     if (keyCode === 66 && comp.value.length >= 1) {
       const s = comp.value.slice(0, -1)
       comp.value = s
-      cand.value = ""
+      cand.value = ''
       Grep(s)
       return false
     }
     // 1 === 32 space
     if (keyCode === 32 && comp.value.length >= 1) {
-      comp.value = ""
-      cand.value = ""
+      comp.value = ''
+      cand.value = ''
       SendStr(CandChinesePart[0])
       return false
     }
@@ -164,19 +164,19 @@ export default function(): Record<string, unknown> {
       const s = comp.value
       if (s.length <= 3) {
         comp.value += e.key
-        cand.value = ""
+        cand.value = ''
 
         // change to english editing status
-        if (s.indexOf("abc") === 0) {
+        if (s.indexOf('abc') === 0) {
           isEnglish = true
           // comp.value = 'english input';
-          comp.value = ":zm to return chinese"
+          comp.value = ':zm to return chinese'
           return true
         }
 
         Grep(comp.value)
       } else {
-        comp.value = ""
+        comp.value = ''
       }
       return false
     }

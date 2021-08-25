@@ -38,11 +38,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
-import useZhengma from "./useZhengma"
+import { defineComponent } from 'vue'
+import useZhengma from './useZhengma'
 
 export default defineComponent({
-  name: "App",
+  name: 'App',
   setup() {
     return {
       ...useZhengma(),
