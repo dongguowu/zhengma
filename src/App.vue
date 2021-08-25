@@ -175,7 +175,7 @@ export default defineComponent({
         comp.value = s;
         cand.value = '';
         Grep(s);
-        return true;
+        return false;
       }
       // 1 === 32 space
       if (a === 32 && comp.value.length >= 1) {
