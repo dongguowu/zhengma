@@ -1,3 +1,3 @@
 module.exports = {
-  "./src/**/*.{js,jsx,vue}": ["vue-cli-service lint", "git add"]
+  "./src/**/*.{js,jsx,ts, tsx, vue}": ["vue-cli-service lint", "git add"]
 };
