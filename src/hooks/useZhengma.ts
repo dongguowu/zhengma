@@ -1,9 +1,9 @@
-import { onMounted, ref } from 'vue'
-import CodeList from './CodeList'
+import { onMounted, onUpdated, ref } from 'vue'
+import CodeList from '../CodeList'
 
-export default function(): Record<string, unknown> {
-  const input = ref(null)
-  const inputContent = ref('')
+export default function (): Record<string, unknown> {
+  const inputRef = ref(null)
+  const input = ref('')
   const comp = ref('')
   const cand = ref('')
 
@@ -86,7 +86,7 @@ export default function(): Record<string, unknown> {
     if (c.length <= 0) {
       return
     }
-    inputContent.value += c
+    input.value += c
   }
 
   function SendCand(a: number) {
@@ -123,10 +123,10 @@ export default function(): Record<string, unknown> {
 
     if (isEnglish) {
       if (keyCode === 69) {
-        console.log(inputContent.value.slice(-3))
-        if (inputContent.value.slice(-3) === ':zm') {
+        console.log(input.value.slice(-3))
+        if (input.value.slice(-3) === ':zm') {
           isEnglish = false
-          inputContent.value = inputContent.value.slice(0, -3)
+          input.value = input.value.slice(0, -3)
           comp.value = ''
           return false
         }
@@ -185,17 +185,22 @@ export default function(): Record<string, unknown> {
   }
 
   const inputFocus = () => {
-    const element = input.value as HTMLElement | null
+    const element = inputRef.value as HTMLElement | null
     if (element !== null) element.focus()
   }
 
   onMounted(() => {
     inputFocus()
+    input.value = localStorage.getItem('content') || ''
+  })
+
+  onUpdated(() => {
+    localStorage.setItem('content', input.value)
   })
 
   return {
+    inputRef,
     input,
-    inputContent,
     comp,
     cand,
     inputFocus,

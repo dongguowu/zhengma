@@ -4,8 +4,8 @@
       <tr>
         <td rowspan="2" align="center" width="70%">
           <textarea
-            ref="input"
-            v-model="inputContent"
+            ref="inputRef"
+            v-model="input"
             class="textarea"
             style="width: 98%; height: 300px"
             :onkeydown="zhengmaKeydown"
@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import useZhengma from './useZhengma'
+import useZhengma from './hooks/useZhengma'
 
 export default defineComponent({
   name: 'App',
