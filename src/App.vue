@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { Ref, ref, defineComponent, onMounted } from 'vue'
+import { Ref, defineComponent, onMounted, onUpdated } from 'vue'
 import useZhengma from './hooks/useZhengma'
 
 export default defineComponent({
@@ -69,6 +69,14 @@ export default defineComponent({
       ;(input as Ref<string>).value = ''
       ;(inputRef as Ref<HTMLElement>).value.focus()
     }
+
+    onMounted(() => {
+      ;(input as Ref<string>).value = localStorage.getItem('content') || ''
+    })
+
+    onUpdated(() => {
+      localStorage.setItem('content', (input as Ref<string>).value)
+    })
 
     return {
       inputRef,

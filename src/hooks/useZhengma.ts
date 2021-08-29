@@ -1,4 +1,4 @@
-import { onMounted, onUpdated, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import CodeList from '../CodeList'
 
 export default function (): Record<string, unknown> {
@@ -118,12 +118,12 @@ export default function (): Record<string, unknown> {
   }
 
   const zhengmaKeydown = (e: KeyboardEvent): boolean => {
-    console.log('keydown: ', e.key, e.key.charCodeAt(0))
+    // console.log('keydown: ', e.key, e.key.charCodeAt(0))
     const keyCode = e.key.charCodeAt(0)
 
     if (isEnglish) {
       if (keyCode === 69) {
-        console.log(input.value.slice(-3))
+        // console.log(input.value.slice(-3))
         if (input.value.slice(-3) === ':zm') {
           isEnglish = false
           input.value = input.value.slice(0, -3)
@@ -191,11 +191,6 @@ export default function (): Record<string, unknown> {
 
   onMounted(() => {
     inputFocus()
-    input.value = localStorage.getItem('content') || ''
-  })
-
-  onUpdated(() => {
-    localStorage.setItem('content', input.value)
   })
 
   return {
