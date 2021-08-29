@@ -160,6 +160,15 @@ export default function (): Record<string, unknown> {
     //   return false
     // }
 
+    if (keyCode >= 48 && keyCode <= 57) {
+      comp.value = ''
+      cand.value = ''
+      // 49 - 0; 48 - 9
+      const index = keyCode - 49 >= 0 ? keyCode - 49 : 9
+      SendStr(CandChinesePart[index])
+      return false
+    }
+
     if (keyCode >= 97 && keyCode <= 122) {
       const s = comp.value
       if (s.length <= 3) {
