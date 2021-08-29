@@ -33,19 +33,52 @@
           ></textarea>
         </td>
       </tr>
+      <tr>
+        <td colspan="2" height="30" align="center">
+          <input type="button" class="but" @click="copyInput" value="复制" />
+          <input type="button" class="but" @click="clearInput" value="清空" />
+        </td>
+      </tr>
     </tbody>
   </table>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { Ref, ref, defineComponent, onMounted } from 'vue'
 import useZhengma from './hooks/useZhengma'
 
 export default defineComponent({
   name: 'App',
   setup() {
+    // const input = ref('')
+    const { inputRef, input, comp, cand, inputFocus, zhengmaKeydown } =
+      useZhengma()
+    const copyInput = () => {
+      const el = document.createElement('textarea')
+      el.setAttribute('readonly', '')
+      el.style.position = 'absolute'
+      el.style.left = '-99999px'
+      el.value = (input as Ref<string>).value
+      document.body.appendChild(el)
+      el.select()
+      document.execCommand('copy')
+      // ;(inputFocus as Function)()
+      ;(inputRef as Ref<HTMLElement>).value.focus()
+    }
+    const clearInput = () => {
+      ;(input as Ref<string>).value = ''
+      ;(inputRef as Ref<HTMLElement>).value.focus()
+    }
+
     return {
-      ...useZhengma(),
+      inputRef,
+      input,
+      comp,
+      cand,
+      inputFocus,
+      zhengmaKeydown,
+      copyInput,
+      clearInput,
     }
   },
 })
