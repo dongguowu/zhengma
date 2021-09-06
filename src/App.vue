@@ -35,6 +35,12 @@
       </tr>
       <tr>
         <td colspan="2" height="30" align="center">
+          <input
+            type="button"
+            class="but"
+            @click="googleInput"
+            value="google"
+          />
           <input type="button" class="but" @click="copyInput" value="复制" />
           <input type="button" class="but" @click="clearInput" value="清空" />
         </td>
@@ -69,6 +75,12 @@ export default defineComponent({
       ;(input as Ref<string>).value = ''
       ;(inputRef as Ref<HTMLElement>).value.focus()
     }
+    const googleInput = () => {
+      window.open(
+        `https://www.google.com/search?q=${(input as Ref<string>).value}`,
+        '_blank'
+      )
+    }
 
     onMounted(() => {
       ;(input as Ref<string>).value = localStorage.getItem('content') || ''
@@ -87,6 +99,7 @@ export default defineComponent({
       zhengmaKeydown,
       copyInput,
       clearInput,
+      googleInput,
     }
   },
 })
