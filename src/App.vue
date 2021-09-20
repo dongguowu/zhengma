@@ -39,10 +39,20 @@
             type="button"
             class="but"
             @click="googleInput"
-            value="google"
+            value="Google"
           />
-          <input type="button" class="but" @click="copyInput" value="复制" />
-          <input type="button" class="but" @click="clearInput" value="清空" />
+          <input type="button" class="but" @click="copyInput" value="Copy" />
+          <input
+            type="button"
+            class="but"
+            @click="deleteInput"
+            value="Delete"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {{ status }}
         </td>
       </tr>
     </tbody>
@@ -50,7 +60,8 @@
 </template>
 
 <script lang="ts">
-import { Ref, defineComponent, onMounted, onUpdated } from 'vue'
+import { ref, Ref, defineComponent, onMounted, onUpdated } from 'vue'
+import tinykeys from 'tinykeys'
 import useZhengma from './hooks/useZhengma'
 
 export default defineComponent({
@@ -71,7 +82,7 @@ export default defineComponent({
       // ;(inputFocus as Function)()
       ;(inputRef as Ref<HTMLElement>).value.focus()
     }
-    const clearInput = () => {
+    const deleteInput = () => {
       ;(input as Ref<string>).value = ''
       ;(inputRef as Ref<HTMLElement>).value.focus()
     }
@@ -84,11 +95,27 @@ export default defineComponent({
 
     onMounted(() => {
       ;(input as Ref<string>).value = localStorage.getItem('content') || ''
+      tinykeys(window, {
+        '$mod+KeyD': (event) => {
+          event.preventDefault()
+          deleteInput()
+        },
+        '$mod+KeyG': (event) => {
+          event.preventDefault()
+          googleInput()
+        },
+        '$mod+KeyC': (event) => {
+          event.preventDefault()
+          copyInput()
+        },
+      })
     })
 
     onUpdated(() => {
       localStorage.setItem('content', (input as Ref<string>).value)
     })
+
+    const status = ref('this is status info.')
 
     return {
       inputRef,
@@ -98,8 +125,9 @@ export default defineComponent({
       inputFocus,
       zhengmaKeydown,
       copyInput,
-      clearInput,
+      deleteInput,
       googleInput,
+      status,
     }
   },
 })
