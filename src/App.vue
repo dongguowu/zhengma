@@ -48,6 +48,12 @@
             @click="deleteInput"
             value="Delete"
           />
+          <input
+            type="button"
+            class="but"
+            @click="isEnglishMode = !isEnglishMode"
+            v-bind:value="isEnglishMode ? 'English' : '中文输入'"
+          />
         </td>
       </tr>
       <tr>
@@ -60,7 +66,14 @@
 </template>
 
 <script lang="ts">
-import { ref, Ref, defineComponent, onMounted, onUpdated } from 'vue'
+import {
+  ref,
+  Ref,
+  defineComponent,
+  onMounted,
+  onUpdated,
+  watchEffect,
+} from 'vue'
 import tinykeys from 'tinykeys'
 import useZhengma from './hooks/useZhengma'
 
@@ -68,8 +81,16 @@ export default defineComponent({
   name: 'App',
   setup() {
     // const input = ref('')
+
+    const status = ref('this is status info.')
+    const isEnglishMode = ref(false)
+
+    watchEffect(() => {
+      status.value = isEnglishMode.value.toString()
+    })
+
     const { inputRef, input, comp, cand, inputFocus, zhengmaKeydown } =
-      useZhengma()
+      useZhengma(isEnglishMode.value)
     const copyInput = () => {
       const el = document.createElement('textarea')
       el.setAttribute('readonly', '')
@@ -108,14 +129,16 @@ export default defineComponent({
           event.preventDefault()
           copyInput()
         },
+        '$mod+KeySpace': (event) => {
+          event.preventDefault()
+          isEnglishMode.value = !isEnglishMode.value
+        },
       })
     })
 
     onUpdated(() => {
       localStorage.setItem('content', (input as Ref<string>).value)
     })
-
-    const status = ref('this is status info.')
 
     return {
       inputRef,
@@ -128,6 +151,7 @@ export default defineComponent({
       deleteInput,
       googleInput,
       status,
+      isEnglishMode,
     }
   },
 })

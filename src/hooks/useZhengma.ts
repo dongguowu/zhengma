@@ -1,13 +1,13 @@
 import { onMounted, ref } from 'vue'
 import CodeList from '../CodeList'
 
-export default function (): Record<string, unknown> {
+export default function (isEnglish: boolean): Record<string, unknown> {
   const inputRef = ref(null)
   const input = ref('')
   const comp = ref('')
   const cand = ref('')
 
-  let isEnglish = false
+  // const isEnglish = false
   const SPACECHAR = ' '
   const CandChinesePart: string[] = []
   const CandCompPart: string[] = []
@@ -121,16 +121,18 @@ export default function (): Record<string, unknown> {
     // console.log('keydown: ', e.key, e.key.charCodeAt(0))
     const keyCode = e.key.charCodeAt(0)
 
+    // Change input mode
+    // FIXME: change input mode
     if (isEnglish) {
-      if (keyCode === 69) {
-        // console.log(input.value.slice(-3))
-        if (input.value.slice(-3) === ':zm') {
-          isEnglish = false
-          input.value = input.value.slice(0, -3)
-          comp.value = ''
-          return false
-        }
-      }
+      //   if (keyCode === 69) {
+      //     // console.log(input.value.slice(-3))
+      //     if (input.value.slice(-3) === ':zm') {
+      //       isEnglish = false
+      //       input.value = input.value.slice(0, -3)
+      //       comp.value = ''
+      //       return false
+      //     }
+      //   }
 
       return true // starting input english words
     }
@@ -176,12 +178,12 @@ export default function (): Record<string, unknown> {
         cand.value = ''
 
         // change to english editing status
-        if (s.indexOf('abc') === 0) {
-          isEnglish = true
-          // comp.value = 'english input';
-          comp.value = ':zm to return chinese'
-          return true
-        }
+        // if (s.indexOf('abc') === 0) {
+        //   isEnglish = true
+        //   // comp.value = 'english input';
+        //   comp.value = ':zm to return chinese'
+        //   return true
+        // }
 
         Grep(comp.value)
       } else {
