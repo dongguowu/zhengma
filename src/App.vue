@@ -52,7 +52,7 @@
             type="button"
             class="but"
             @click="isEnglishMode = !isEnglishMode"
-            v-bind:value="isEnglishMode ? 'English' : '中文输入'"
+            v-bind:value="isEnglishMode ? 'English' : 'Chinese'"
           />
         </td>
       </tr>
@@ -80,13 +80,11 @@ import useZhengma from './hooks/useZhengma'
 export default defineComponent({
   name: 'App',
   setup() {
-    // const input = ref('')
-
-    const status = ref('this is status info.')
+    const status = ref('')
     const isEnglishMode = ref(false)
 
     watchEffect(() => {
-      status.value = isEnglishMode.value.toString()
+      status.value = isEnglishMode.value ? 'English' : 'Chinese'
     })
 
     const { inputRef, input, comp, cand, inputFocus, zhengmaKeydown } =
