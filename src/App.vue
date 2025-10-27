@@ -9,7 +9,7 @@
             class="textarea"
             style="width: 98%; height: 300px"
             :onkeydown="zhengmaKeydown"
-            placeholder="请在这里打字"
+            placeholder="请在这里开始输入中文"
           ></textarea>
         </td>
 
