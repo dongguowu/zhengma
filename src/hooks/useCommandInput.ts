@@ -1,7 +1,7 @@
-export default function (
+export default function useCommandInput(
   input: string,
   isEnglishModel: boolean
-): Record<string, any> {
+): Record<string, unknown> {
   const copyInput = () => {
     const el = document.createElement('textarea')
     el.setAttribute('readonly', '')
