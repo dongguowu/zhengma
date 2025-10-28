@@ -10,6 +10,7 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "glob-parent": "6.0.1",
+    "node-ipc": "12.0.0",
     "tinykeys": "1.2.0",
     "vue": "^3.0.0",
     "vuex": "^4.0.0-0"
@@ -45,7 +46,7 @@
   },
   "resolutions": {
     "glob-parent": "^6.0.1",
-    "node-ipc": "^11.1.0",
-    "@achrinza/node-ipc": "npm:node-ipc@^11.1.0"
+    "node-ipc": "^12.0.0",
+    "@achrinza/node-ipc": "npm:node-ipc@^12.0.0"
   }
 }

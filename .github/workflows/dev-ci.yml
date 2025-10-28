@@ -1,6 +1,9 @@
 # Workflow for the dev branch
 name: Dev CI - Test and Merge
 
+permissions:
+  contents: write
+
 on:
   # Triggers the workflow on push events for the dev branch
   push:
