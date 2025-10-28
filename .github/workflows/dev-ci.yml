@@ -1,0 +1,43 @@
+# Workflow for the dev branch
+name: Dev CI - Test and Merge
+
+on:
+  # Triggers the workflow on push events for the dev branch
+  push:
+    branches: ['dev']
+
+jobs:
+  test_and_merge:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Check out the repository with full history
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required for merging
+
+      # 2. Set up Node.js environment
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: yarn install
+
+      # 4. Run linter as a test
+      - name: Run Linter
+        run: yarn lint
+
+      # 5. Merge dev into master if linter passes
+      - name: Merge to Master
+        if: success()
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git fetch origin master
+          git checkout master
+          git merge dev
+          git push origin master
