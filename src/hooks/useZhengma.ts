@@ -1,7 +1,7 @@
 import { onMounted, ref } from 'vue'
 import CodeList from '../CodeList'
 
-export default function (isEnglish: boolean): Record<string, unknown> {
+export default function useZhengma(isEnglish: boolean): Record<string, unknown> {
   const inputRef = ref(null)
   const input = ref('')
   const comp = ref('')
