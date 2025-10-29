@@ -4,8 +4,8 @@
       <tr>
         <td rowspan="2" align="center" width="70%">
           <textarea
-            ref="inputRef"
-            v-model="input"
+            ref="textAreaRef"
+            v-model="textAreaString"
             class="textarea"
             style="width: 98%; height: 300px"
             :onkeydown="zhengmaKeydown"
@@ -15,7 +15,7 @@
 
         <td align="center" width="30%">
           <input
-            v-model="comp"
+            v-model="currentZhengmaCode"
             :onfocus="inputFocus"
             class="textarea"
             style="width: 96%"
@@ -26,7 +26,7 @@
       <tr>
         <td align="center">
           <textarea
-            v-model="cand"
+            v-model="currentZhengmaCandidates"
             :onfocus="inputFocus"
             class="textarea"
             style="width: 96%; height: 272px"
@@ -100,33 +100,41 @@ export default defineComponent({
       status.value =  `${getFormattedDateTime()} / mode: ${mode}`;
     })
 
-    const { inputRef, input, comp, cand, inputFocus, zhengmaKeydown } =
+    const {
+      textAreaRef,
+      textAreaString,
+      currentZhengmaCode,
+      currentZhengmaCandidates,
+      inputFocus,
+      handleKeyPress,
+    } =
       useZhengma(isEnglishMode.value)
+
     const copyInput = () => {
       const el = document.createElement('textarea')
       el.setAttribute('readonly', '')
       el.style.position = 'absolute'
       el.style.left = '-99999px'
-      el.value = (input as Ref<string>).value
+      el.value = (textAreaString as Ref<string>).value
       document.body.appendChild(el)
       el.select()
       document.execCommand('copy')
       // ;(inputFocus as Function)()
-      ;(inputRef as Ref<HTMLElement>).value.focus()
+      ;(textAreaRef as Ref<HTMLElement>).value.focus()
     }
     const deleteInput = () => {
-      ;(input as Ref<string>).value = ''
-      ;(inputRef as Ref<HTMLElement>).value.focus()
+      ;(textAreaString as Ref<string>).value = ''
+      ;(textAreaRef as Ref<HTMLElement>).value.focus()
     }
     const googleInput = () => {
       window.open(
-        `https://www.google.com/search?q=${(input as Ref<string>).value}`,
+        `https://www.google.com/search?q=${(textAreaString as Ref<string>).value}`,
         '_blank'
       )
     }
 
     onMounted(() => {
-      ;(input as Ref<string>).value = localStorage.getItem('content') || ''
+      ;(textAreaString as Ref<string>).value = localStorage.getItem('content') || ''
       tinykeys(window, {
         '$mod+KeyD': (event) => {
           event.preventDefault()
@@ -148,16 +156,16 @@ export default defineComponent({
     })
 
     onUpdated(() => {
-      localStorage.setItem('content', (input as Ref<string>).value)
+      localStorage.setItem('content', (textAreaString as Ref<string>).value)
     })
 
     return {
-      inputRef,
-      input,
-      comp,
-      cand,
+      textAreaRef,
+      textAreaString,
+      currentZhengmaCode,
+      currentZhengmaCandidates,
+      handleKeyPress,
       inputFocus,
-      zhengmaKeydown,
       copyInput,
       deleteInput,
       googleInput,
