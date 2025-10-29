@@ -83,8 +83,21 @@ export default defineComponent({
     const status = ref('')
     const isEnglishMode = ref(false)
 
+    const getFormattedDateTime = () => {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = (now.getMonth() + 1).toString().padStart(2, '0');
+      const day = now.getDate().toString().padStart(2, '0');
+      const hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      return `updated: ${year}-${month}-${day} / ${hours}:${minutes}${ampm}`;
+    };
+
     watchEffect(() => {
-      status.value = isEnglishMode.value ? 'English' : 'Chinese'
+      const mode = isEnglishMode.value ? 'English' : 'Chinese';
+      // status.value = getFormattedDateTime() + ` / mode: ${mode}`;
+      status.value =  `${getFormattedDateTime()} / mode: ${mode}`;
     })
 
     const { inputRef, input, comp, cand, inputFocus, zhengmaKeydown } =
