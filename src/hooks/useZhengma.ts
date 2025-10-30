@@ -3,9 +3,9 @@ import CodeList from '../CodeList'
 
 export default function useZhengma(isEnglish: boolean): Record<string, unknown> {
   const textAreaRef = ref(null)
-  const currentZhengmaCodeInput = ref('')
   const textAreaString = ref('')
-  const zhengmaCandidates = ref('')
+  const currentZhengmaCodeInput = ref('')
+  const currentZhengmaCandidates = ref('')
 
   // const isEnglish = false
   const SPACE_CHAR = ' '
@@ -62,23 +62,23 @@ export default function useZhengma(isEnglish: boolean): Record<string, unknown> 
         CandidateCodePart[b] = d.substring(c.length, d.indexOf(SPACE_CHAR))
         CandidatesChinesePart[b] = d.substr(d.lastIndexOf(SPACE_CHAR) + 1)
         if (b <= 8) {
-          zhengmaCandidates.value += `${b + 1}.${CandidatesChinesePart[b]}${CandidateCodePart[b]}\n`
+          currentZhengmaCandidates.value += `${b + 1}.${CandidatesChinesePart[b]}${CandidateCodePart[b]}\n`
         } else {
-          zhengmaCandidates.value += `${0}.${CandidatesChinesePart[b]}${CandidateCodePart[b]}\n`
+          currentZhengmaCandidates.value += `${0}.${CandidatesChinesePart[b]}${CandidateCodePart[b]}\n`
         }
       } else {
         break
       }
     }
     if (a > 10 && CodeList[a - 10].indexOf(c) === 0) {
-      zhengmaCandidates.value += '-.\u2190\n'
+      currentZhengmaCandidates.value += '-.\u2190\n'
     }
     if (
       b === 10 &&
       a <= CodeList.length - 11 &&
       CodeList[a + b].indexOf(c) === 0
     ) {
-      zhengmaCandidates.value += '+.\u2192'
+      currentZhengmaCandidates.value += '+.\u2192'
     }
   }
 
@@ -93,7 +93,7 @@ export default function useZhengma(isEnglish: boolean): Record<string, unknown> 
     if (a >= 0 && a <= 9) {
       SendStr(CandidatesChinesePart[a])
       currentZhengmaCodeInput.value = ''
-      zhengmaCandidates.value = ''
+      currentZhengmaCandidates.value = ''
     }
   }
 
@@ -146,14 +146,14 @@ export default function useZhengma(isEnglish: boolean): Record<string, unknown> 
     if (keyCode === 66 && currentZhengmaCodeInput.value.length >= 1) {
       const s = currentZhengmaCodeInput.value.slice(0, -1)
       currentZhengmaCodeInput.value = s
-      zhengmaCandidates.value = ''
+      currentZhengmaCandidates.value = ''
       Grep(s)
       return false
     }
     // 1 === 32 space
     if (keyCode === 32 && currentZhengmaCodeInput.value.length >= 1) {
       currentZhengmaCodeInput.value = ''
-      zhengmaCandidates.value = ''
+      currentZhengmaCandidates.value = ''
       SendStr(CandidatesChinesePart[0])
       return false
     }
@@ -170,7 +170,7 @@ export default function useZhengma(isEnglish: boolean): Record<string, unknown> 
     // handle number  '48-57'
     if (keyCode >= 48 && keyCode <= 57) {
       currentZhengmaCodeInput.value = ''
-      zhengmaCandidates.value = ''
+      currentZhengmaCandidates.value = ''
       // 49 - 0; 48 - 9
       const index = keyCode - 49 >= 0 ? keyCode - 49 : 9
       SendStr(CandidatesChinesePart[index])
@@ -182,7 +182,7 @@ export default function useZhengma(isEnglish: boolean): Record<string, unknown> 
       const currentZhengmaCode = currentZhengmaCodeInput.value
       if (currentZhengmaCode.length <= 3) {
         currentZhengmaCodeInput.value += e.key
-        zhengmaCandidates.value = ''
+        currentZhengmaCandidates.value = ''
 
         // change to english editing status
         // if (s.indexOf('abc') === 0) {
@@ -213,9 +213,9 @@ export default function useZhengma(isEnglish: boolean): Record<string, unknown> 
 
   return {
     textAreaRef,
-    currentZhengmaInput: textAreaString,
+    textAreaString,
     currentZhengmaCodeInput,
-    zhengmaCandidates,
+    currentZhengmaCandidates,
     inputFocus,
     handleKeyPress,
   }

@@ -8,14 +8,14 @@
             v-model="textAreaString"
             class="textarea"
             style="width: 98%; height: 300px"
-            :onkeydown="zhengmaKeydown"
+            :onkeydown="handleKeyPress"
             placeholder="请在这里开始输入中文"
           ></textarea>
         </td>
 
         <td align="center" width="30%">
           <input
-            v-model="currentZhengmaCode"
+            v-model="currentZhengmaCodeInput"
             :onfocus="inputFocus"
             class="textarea"
             style="width: 96%"
@@ -103,7 +103,7 @@ export default defineComponent({
     const {
       textAreaRef,
       textAreaString,
-      currentZhengmaCode,
+      currentZhengmaCodeInput,
       currentZhengmaCandidates,
       inputFocus,
       handleKeyPress,
@@ -162,7 +162,7 @@ export default defineComponent({
     return {
       textAreaRef,
       textAreaString,
-      currentZhengmaCode,
+      currentZhengmaCodeInput,
       currentZhengmaCandidates,
       handleKeyPress,
       inputFocus,
